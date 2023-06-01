@@ -1,45 +1,132 @@
 .container {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: start;
+    justify-content: center;
     height: 100vh;
     width: 100%;
     background-color: var(--background-color);
 }
 
-.main-screen {
+.mainContent {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: start;
     justify-content: start;
     height: 100%;
     width: 100%;
     max-width: 800px;
     background-color: var(--white-color);
-    padding: 1.5em;
 }
 
-.mainHeader {
+.mainTitle {
     display: flex;
+    align-items: center;
+    justify-content: start;
     width: 100%;
+    max-width: 800px;
     background-color: var(--primary-color);
     color: var(--white-color);
-    max-width: 800px;
-    padding: 1.5em 1.5em 1.5em;
+}
+
+.mainTitle h1 {
+    margin: 1.5rem 0 1.5rem 2rem;
 }
 
 .postContainer {
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: center;
     justify-content: start;
     width: 100%;
-    margin-top: 1.5em;
-    border: 1px solid var(--border-color);
-    border-radius: 1em;
+    margin-top: 1.5rem;
 }
 
-.titleInput, .contentInput {
-    width: 100%;
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+}
+
+.std-margin {
+    margin: 1.5rem 0 0 1.5rem;
+}
+
+.std-width {
+    width: calc(100% - 3rem);
+}
+
+.titleInput,
+.contentInput {
+    display: flex;
+    flex-direction: column;
+    gap:.5rem;
+}
+
+.create-button {
+    display: flex;
+    justify-content: flex-end;
+    margin: 1.5rem 0 1.5rem 0;
+}
+
+.create {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    margin-left: 1em;
+}
+
+.content-header {
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--primary-color);
+    border-radius: 1rem 1rem 0 0;
+    height: 70px;
+    color: var(--white-color);
+    border: 1px solid var(--primary-color);
+}
+
+.content-header h1 {
+    margin: 0 1.5rem 0 1.5rem;
+}
+
+.icons-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 0 1.5rem 0 1.5rem;
+}
+
+.icons-container img {
+    cursor: pointer;
+    width: 22px;
+    color: white;
+}
+
+.posts-contents {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 0 1rem 1rem;
+    border: 1px solid var(--border-color);
+}
+
+.posts-contents p {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.name-space {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1.5rem 0 1.5rem 0;
+}
+
+.name-space h2 {
+    color: var(--placeholder-color);
 }
