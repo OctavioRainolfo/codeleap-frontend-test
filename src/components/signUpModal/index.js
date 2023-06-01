@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './style.css'
+import { handleChange } from '../handleChange';
 
-function SignUpModal({ show }) {
-
-    const [isVisible, setIsVisible] = useState(show);
+function SignUpModal() {
 
     const [disabled, setDisabled] = useState(true);
 
@@ -12,25 +11,23 @@ function SignUpModal({ show }) {
 
     const navigate = useNavigate();
 
-    function handleInputChange(value) {
-        setUsername(value);
-        if (value.length > 0) {
+    useEffect(() => {
+        if (username.length > 0) {
             setDisabled(false);
         } else {
             !disabled && setDisabled(true);
         }
-    }
+    }, [username]);
 
   return (
       <>
-          {isVisible ? (
               <div className="modal">
                   <div className="modal-content">
                       <h1>Welcome to CodeLeap network!</h1>
                       <div className="modal-input" >
                           <h2>Please enter your username</h2>
                           <input onChange={(e) => {
-                              handleInputChange(e.target.value)
+                              handleChange(setUsername)(e);
                           }} type="text" placeholder="John doe"/>
                       </div>
                       <div className='modal-button'>
@@ -40,7 +37,6 @@ function SignUpModal({ show }) {
                       </div>
                   </div>
               </div>
-          ) : null}
           
       </>
   )

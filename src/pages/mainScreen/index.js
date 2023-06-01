@@ -3,20 +3,44 @@ import { useLocation } from 'react-router-dom';
 import './style.css'
 import trash from '../../components/assets/trash.png'
 import edit from '../../components/assets/edit.png'
+import { api } from '../../actions/api';
+import { useSelector, useDispatch } from 'react-redux';
+import { setCareers } from '../../redux/slice/index';
+import { calculateTimeAgo } from '../../components/timeAgo'
+import { handleChange } from '../../components/handleChange';
 
 function MainScreen() {
+
   const [disabled, setDisabled] = useState(true);
+
   const [title, setTitle] = useState('');
+
   const [content, setContent] = useState('');
 
   const location = useLocation();
-  const { state } = location;
 
-  const username = state?.username;
+  const { usernameState } = location;
 
-  const handleChange = (setState) => (event) => {
-    setState(event.target.value);
+  const username = usernameState?.username;
+
+  const dispatch = useDispatch();
+
+  const state = useSelector(state => state.setCareers);
+
+  const handleApiResponse = (apiResponse) => {
+    dispatch(setCareers(apiResponse));
   };
+
+  function getCareers() {
+    api.get().then((response) => {
+      console.log(response.data);
+      handleApiResponse(response.data);
+    }
+    ).catch((error) => {
+      console.log(error);
+    }
+    );
+  }
 
   useEffect(() => {
     if (title.length > 0 && content.length > 0) {
@@ -26,8 +50,13 @@ function MainScreen() {
     }
   }, [title, content]);
 
+  useEffect(() => {
+    console.log(state);
+  }, [state]);
+
   return (
     <div className='container'>
+      <button onClick={getCareers}>Get Careers</button>
       <div className='mainContent'>
 
         <div className='mainTitle'>
@@ -54,32 +83,36 @@ function MainScreen() {
           </div>
         </div>
 
-        <div className='postContainer'>
+        {state.results.map((item, index) => {
+          return (
+            <div key={index} className='postContainer'>
 
-          <div className='content-header std-width'>
-            <h1>posts</h1>
-            <div className='icons-container'>
-              <img src={trash} />
-              <img src={edit} />
+              <div className='content-header std-width'>
+                <h1>{item.title}</h1>
+                <div className='icons-container'>
+                  <img src={trash} />
+                  <img src={edit} />
+                </div>
+
+              </div>
+
+              <div className='posts-contents std-width'>
+                <div className='name-space std-width'>
+                  <h2>{item.username}</h2>
+                  <h2>{calculateTimeAgo(item.created_datetime)}</h2>
+                </div>
+                <div className='std-width'>
+                  <p>
+                    {item.content}
+                  </p>
+                </div>
+              </div>
+
+
             </div>
+          )
+        })}
 
-          </div>
-
-          <div className='posts-contents std-width'>
-            <div className='name-space std-width'>
-              <h2>@name</h2>
-              <h2>x time ago</h2>
-            </div>
-            <div className='std-width'>
-              <p>
-              Curabitur suscipit suscipit tellus. Phasellus consectetuer vestibulum elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas egestas arcu quis ligula mattis placerat. Duis vel nibh at velit scelerisque suscipit.
-
-Duis lobortis massa imperdiet quam. Aenean posuere, tortor sed cursus feugiat, nunc augue blandit nunc, eu sollicitudin urna dolor sagittis lacus. Fusce a quam. Nullam vel sem. Nullam cursus lacinia erat.
-              </p>
-            </div>
-          </div>
-
-        </div>
       </div>
 
 

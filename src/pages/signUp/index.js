@@ -3,7 +3,7 @@ import SignUpModal from '../../components/signUpModal';
 
 function SignUp() {
   return (
-    <SignUpModal show="true"/>
+    <SignUpModal/>
   )
 }
 
