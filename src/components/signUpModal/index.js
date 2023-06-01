@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import './style.css'
 import { handleChange } from '../handleChange';
+import { SetUsernameState } from '../../actions/SetUsernameState'
 
 function SignUpModal() {
 
     const [disabled, setDisabled] = useState(true);
 
-    const [username, setUsername] = useState('');
-
-    const navigate = useNavigate();
+    const [name, setName] = useState('');
 
     useEffect(() => {
-        if (username.length > 0) {
+        if (name.length > 0) {
             setDisabled(false);
         } else {
             !disabled && setDisabled(true);
         }
-    }, [username]);
+    }, [name]);
+
+    const handleUsername = () => {
+        SetUsernameState(name);
+    }
 
   return (
       <>
@@ -27,17 +29,14 @@ function SignUpModal() {
                       <div className="modal-input" >
                           <h2>Please enter your username</h2>
                           <input onChange={(e) => {
-                              handleChange(setUsername)(e);
+                              handleChange(setName)(e);
                           }} type="text" placeholder="John doe"/>
                       </div>
                       <div className='modal-button'>
-                          <button disabled={disabled} onClick={() => {
-                              navigate('/mainScreen', { state: { username } });
-                          }} className="enter-button">ENTER</button>
+                          <button disabled={disabled} onClick={handleUsername} className="enter-button">ENTER</button>
                       </div>
                   </div>
               </div>
-          
       </>
   )
 }
