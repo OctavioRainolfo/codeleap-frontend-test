@@ -12,6 +12,7 @@ import DeleteItem from '../../actions/deleteItem';
 import VerifyUsername from '../../components/verifyUsername';
 import EditModal from '../../components/editModal';
 import EditItem from '../../actions/editItem';
+import PostItem from '../../actions/postItem';
 
 function MainScreen() {
 
@@ -74,6 +75,11 @@ function MainScreen() {
   const handleEdit = (id, title, content) => {
     EditItem(id, title, content);
     setShowEdit(false);
+  }
+
+  const handlePost = () => {
+    console.log(state.username, "aaa", title, content);
+    PostItem(state.username, title, content);
   }
 
 
@@ -148,7 +154,7 @@ function MainScreen() {
             </div>
 
             <div className='create-button std-width'>
-              <button disabled={disabledButton} className='create'>CREATE</button>
+              <button disabled={disabledButton} onClick={handlePost} className='create'>CREATE</button>
             </div>
           </div>
         </div>
