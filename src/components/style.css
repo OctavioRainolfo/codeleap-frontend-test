@@ -9,25 +9,39 @@
     top: 0;
     width: 100%;
     height: 100%;
+}
+
+.modal-semi-transparent {
+    background-color: var(--modalBG-color);
+}
+
+.modal-standart-background {
     background-color: var(--background-color);
 }
 
-.modal-content {
+.signUp-modal-width {
     width: 500px;
+}
+
+.delete-modal-width {
+    width: 600px;
+}
+
+.modal-content {
     border: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: start;
-    padding: 1.5em;
+    padding: 1.5rem;
     background-color: var(--white-color);
-    border-radius: 1em;
+    border-radius: 1rem;
 }
 
 .modal-input {
     width: 100%;
-    margin: 1.5em 0 1em 0;
-    gap: 0.5em;
+    margin-top: 1.5rem;
+    gap: 0.5rem;
     display: flex;
     flex-direction: column;
 }
@@ -36,10 +50,34 @@
     width: 100%;
     display: flex;
     justify-content: flex-end;
+    margin-top: 1.5rem;
+}
+
+.content-gap {
+    gap: 2.5rem;
+}
+
+.buttons-gap {
+    gap: 1rem;
 }
 
 .enter-button {
     background-color: var(--primary-color);
     color: var(--white-color);
-    margin-left: 1em;
+}
+
+.delete-button {
+    background-color: var(--delete-color);
+    color: var(--white-color);
+}
+
+.cancel-button {
+    background-color: var(--white-color);
+    color: var(--black-color);
+    border: 1px solid var(--border-color);  
+}
+
+.save-button {
+    background-color: var(--save-color);
+    color: var(--white-color);
 }

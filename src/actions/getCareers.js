@@ -3,7 +3,6 @@ import { setCareers } from '../redux/slice/index';
 import { api } from './api';
 import { useEffect } from 'react';
 
-
 export const GetCareers = () => {
 
     const dispatch = useDispatch();

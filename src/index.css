@@ -27,6 +27,7 @@ button {
   border: none;
   cursor: pointer;
   transition: filter 0.3s ease-in-out;
+  font-weight: 700;
 }
 
 button:disabled {
@@ -64,6 +65,7 @@ input:focus, textarea:focus {
 :root {
   --primary-color: #7695EC;
   --background-color: #DDDDDD;
+  --modalBG-color: rgba(119, 119, 119, 0.8);
   --white-color: #FFFFFF;
   --black-color: #000000;
   --placeholder-color: #CCCCCC;

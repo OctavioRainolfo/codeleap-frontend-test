@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './style.css'
 import trash from '../../components/assets/trash.png'
 import edit from '../../components/assets/edit.png'
@@ -7,11 +7,21 @@ import { useSelector } from 'react-redux';
 import { calculateTimeAgo } from '../../components/timeAgo'
 import { handleChange } from '../../components/handleChange';
 import { GetCareers } from '../../actions/getCareers';
-import { NameChecker } from '../../components/nameChecker';
+import DeleteModal from '../../components/deleteModal';
+import DeleteItem from '../../actions/deleteItem';
+import VerifyUsername from '../../components/verifyUsername';
+import EditModal from '../../components/editModal';
+import EditItem from '../../actions/editItem';
 
 function MainScreen() {
 
   const [disabledButton, setDisabledButton] = useState(true);
+
+  const [showDelete, setShowDelete] = useState(false);
+
+  const [showEdit, setShowEdit] = useState(false);
+
+  const [id, setId] = useState('');
 
   const [title, setTitle] = useState('');
 
@@ -19,8 +29,14 @@ function MainScreen() {
 
   const state = useSelector(state => state.careersContent);
 
+  const navigate = useNavigate();
+
   //gets the last 10 posts and set to redux state
   GetCareers();
+
+  useEffect(() => {
+    VerifyUsername(state.username, navigate);
+  }, [])
 
   useEffect(() => {
     if (title.length > 0 && content.length > 0) {
@@ -34,20 +50,53 @@ function MainScreen() {
     console.log(state);
   }, [state]);
 
+  const handleDelete = () => {
+    DeleteItem(id);
+    setShowDelete(false);
+  }
+
+  const handleShowDelete = () => {
+    setShowDelete(true);
+  }
+
+  const handleOnCancelDelete = () => {
+    setShowDelete(false);
+  }
+
+  const handleShowEdit = () => {
+    setShowEdit(true);
+  }
+
+  const handleOnCancelEdit = () => {
+    setShowEdit(false);
+  }
+
+  const handleEdit = (id, title, content) => {
+    EditItem(id, title, content);
+    setShowEdit(false);
+  }
+
+
   function mapPosts() {
     if (state.initialLoad) {
       return (
         state.results.map((item, index) => {
-          console.log(item.username, state.username)
           return (
             <div key={index} className='postContainer'>
 
               <div className='content-header std-width'>
-                <h1>{item.title}</h1>
+                <h1>@{item.title}</h1>
                 {item.username === state.username ?
                   <div className='icons-container'>
-                    <img src={trash} />
-                    <img src={edit} />
+                    <img src={trash} onClick={() => {
+                      setId(item.id);
+                      handleShowDelete();
+                    }} />
+                    <img onClick={() => {
+                      setId(item.id);
+                      handleShowEdit();
+                    }}
+                      src={edit} />
                   </div>
                   : null
                 }
@@ -97,6 +146,7 @@ function MainScreen() {
               <textarea onChange={handleChange(setContent)}
                 rows="4" placeholder="Content here" />
             </div>
+
             <div className='create-button std-width'>
               <button disabled={disabledButton} className='create'>CREATE</button>
             </div>
@@ -107,7 +157,8 @@ function MainScreen() {
 
       </div>
 
-
+      <DeleteModal show={showDelete} onConfirm={handleDelete} onCancel={handleOnCancelDelete} />
+      <EditModal show={showEdit} id={id} onCancel={handleOnCancelEdit} onConfirm={handleEdit} />
     </div>
   )
 }
