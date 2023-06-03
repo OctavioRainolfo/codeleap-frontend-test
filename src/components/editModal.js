@@ -22,7 +22,7 @@ function EditModal({ show, onCancel, onConfirm, id }) {
             {show ? (
                 <div ref={modalRef} className="modal modal-semi-transparent">
                         <ClickOutsideHandler onOutsideClick={onCancel}>
-                        <div className="modal-content delete-modal-width " >
+                        <div className="modal-content mainScreen-modal-width " >
                             <h1>Edit item</h1>
 
                             <div className='modal-input'>

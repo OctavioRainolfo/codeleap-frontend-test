@@ -20,11 +20,11 @@
 }
 
 .signUp-modal-width {
-    width: 500px;
+    max-width: 500px;
 }
 
-.delete-modal-width {
-    width: 600px;
+.mainScreen-modal-width {
+    max-width: 600px;
 }
 
 .modal-content {
@@ -36,6 +36,7 @@
     padding: 1.5rem;
     background-color: var(--white-color);
     border-radius: 1rem;
+    width: 80%;
 }
 
 .modal-input {
@@ -74,7 +75,7 @@
 .cancel-button {
     background-color: var(--white-color);
     color: var(--black-color);
-    border: 1px solid var(--border-color);  
+    border: 1px solid var(--border-color);
 }
 
 .save-button {
@@ -109,11 +110,13 @@
         border-radius: 50px 50px 25px 25px;
         transform: scaleX(1.7);
     }
+
     40% {
         height: 20px;
         border-radius: 50%;
         transform: scaleX(1);
     }
+
     100% {
         top: 0%;
     }
@@ -146,11 +149,13 @@
 
 @keyframes shadow {
     0% {
-     transform: scaleX(2);
-    }
-   40%{
         transform: scaleX(2);
-   }
+    }
+
+    40% {
+        transform: scaleX(2);
+    }
+
     100% {
         transform: scaleX(0.5);
         opacity: .4;
@@ -166,4 +171,9 @@
     left: auto;
     right: 15%;
     animation-delay: .3s;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
 }

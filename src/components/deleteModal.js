@@ -9,7 +9,7 @@ function DeleteModal({ show, onCancel, onConfirm }) {
             {show ? (
                 <div className="modal modal-semi-transparent">
                     <ClickOutsideHandler onOutsideClick={onCancel}>
-                        <div className="modal-content delete-modal-width content-gap">
+                        <div className="modal-content mainScreen-modal-width content-gap">
                             <h1>Are you sure you want to delete this item?</h1>
 
                             <div className='modal-button buttons-gap'>

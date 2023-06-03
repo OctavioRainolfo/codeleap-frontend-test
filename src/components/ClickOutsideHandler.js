@@ -25,7 +25,7 @@ const ClickOutsideHandler = ({ onOutsideClick, children }) => {
     };
   }, [onOutsideClick]);
 
-  return <div ref={containerRef}>{children}</div>;
+  return <div className='flex-center' ref={containerRef}>{children}</div>;
 };
 
 export default ClickOutsideHandler;
