@@ -1,8 +1,9 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 import './style.css'
+import ClickOutsideHandler from './ClickOutsideHandler';
 
 function DeleteModal({ show, onCancel, onConfirm }) {
-    
+
     const handleClickOutside = (e) => {
         if (e.target.className === 'modal modal-semi-transparent') {
             onCancel();
@@ -21,14 +22,16 @@ function DeleteModal({ show, onCancel, onConfirm }) {
         <>
             {show ? (
                 <div className="modal modal-semi-transparent">
-                    <div className="modal-content delete-modal-width content-gap">
-                        <h1>Are you sure you want to delete this item?</h1>
+                    <ClickOutsideHandler onOutsideClick={onCancel}>
+                        <div className="modal-content delete-modal-width content-gap">
+                            <h1>Are you sure you want to delete this item?</h1>
 
-                        <div className='modal-button buttons-gap'>
-                            <button onClick={onCancel} className='cancel-button'>Cancel</button>
-                            <button onClick={onConfirm} className="delete-button">Delete</button>
+                            <div className='modal-button buttons-gap'>
+                                <button onClick={onCancel} className='cancel-button'>Cancel</button>
+                                <button onClick={onConfirm} className="delete-button">Delete</button>
+                            </div>
                         </div>
-                    </div>
+                    </ClickOutsideHandler>
                 </div>
             )
                 : null}

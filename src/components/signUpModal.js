@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import './style.css'
+import React, { useEffect, useState } from 'react';
+import './style.css';
 import { handleChange } from './handleChange';
 import { useNavigate } from 'react-router-dom';
 import { SetUsernameState } from '../actions/setUsernameState';
@@ -8,6 +8,8 @@ import { useDispatch } from 'react-redux';
 function SignUpModal() {
 
     const [disabled, setDisabled] = useState(true);
+
+    const [loader, setLoader] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -24,6 +26,7 @@ function SignUpModal() {
     }, [name]);
 
     const handleUsername = () => {
+        setLoader(true);
         SetUsernameState(dispatch, name);
         navigate('/mainScreen');
     }

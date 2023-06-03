@@ -13,6 +13,7 @@ import VerifyUsername from '../../components/verifyUsername';
 import EditModal from '../../components/editModal';
 import EditItem from '../../actions/editItem';
 import PostItem from '../../actions/postItem';
+import BouncingModalLoader from '../../components/bouncingLoader';
 
 function MainScreen() {
 
@@ -126,6 +127,8 @@ function MainScreen() {
           )
         })
       )
+    } else {
+      return <BouncingModalLoader />
     }
 
   }

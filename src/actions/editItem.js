@@ -11,7 +11,6 @@ function EditItem(id, title, content) {
             }
         ).then(() => {
             console.log('edited')
-            GetCareers();
         });
 
     } catch (error) {
