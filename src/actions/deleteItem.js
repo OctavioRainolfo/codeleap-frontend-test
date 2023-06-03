@@ -1,13 +1,13 @@
 import React from 'react'
 import { api } from '../actions/api';
-import { GetCareers } from './getCareers';
+import { GetItems } from './getItems';
 
-function DeleteItem(id) {
+function DeleteItem(id, closeLoader) {
     console.log(id)
     try {
         api.delete(`${id}/`).then(() => {
             console.log('deleted')
-            GetCareers();
+            closeLoader();
         });
         
     } catch (error) {

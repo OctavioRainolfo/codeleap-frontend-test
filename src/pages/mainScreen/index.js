@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './style.css'
 import trash from '../../components/assets/trash.png'
 import edit from '../../components/assets/edit.png'
 import { useSelector } from 'react-redux';
 import { calculateTimeAgo } from '../../components/timeAgo'
 import { handleChange } from '../../components/handleChange';
-import { GetCareers } from '../../actions/getCareers';
+import { GetItems } from '../../actions/getItems';
 import DeleteModal from '../../components/deleteModal';
 import DeleteItem from '../../actions/deleteItem';
 import VerifyUsername from '../../components/verifyUsername';
 import EditModal from '../../components/editModal';
 import EditItem from '../../actions/editItem';
 import PostItem from '../../actions/postItem';
-import BouncingModalLoader from '../../components/bouncingLoader';
+import BouncingModalLoader from '../../components/loaderModal';
 
 function MainScreen() {
 
@@ -25,6 +25,8 @@ function MainScreen() {
 
   const [id, setId] = useState('');
 
+  const [loader, setLoader] = useState(false);
+
   const [title, setTitle] = useState('');
 
   const [content, setContent] = useState('');
@@ -34,7 +36,7 @@ function MainScreen() {
   const navigate = useNavigate();
 
   //gets the last 10 posts and set to redux state
-  GetCareers();
+  GetItems();
 
   useEffect(() => {
     VerifyUsername(state.username, navigate);
@@ -53,7 +55,8 @@ function MainScreen() {
   }, [state]);
 
   const handleDelete = () => {
-    DeleteItem(id);
+    setLoader(true);
+    DeleteItem(id, closeLoader);
     setShowDelete(false);
   }
 
@@ -74,13 +77,20 @@ function MainScreen() {
   }
 
   const handleEdit = (id, title, content) => {
-    EditItem(id, title, content);
+    setLoader(true);
+    EditItem(id, title, content, closeLoader);
     setShowEdit(false);
   }
 
   const handlePost = () => {
     console.log(state.username, "aaa", title, content);
-    PostItem(state.username, title, content);
+    setLoader(true);
+    PostItem(state.username, title, content, closeLoader);
+  }
+
+  const closeLoader = () => {
+    console.log("toggle", loader)
+    setLoader(false);
   }
 
 
@@ -166,6 +176,7 @@ function MainScreen() {
 
       </div>
 
+      {loader ? <BouncingModalLoader /> : null}
       <DeleteModal show={showDelete} onConfirm={handleDelete} onCancel={handleOnCancelDelete} />
       <EditModal show={showEdit} id={id} onCancel={handleOnCancelEdit} onConfirm={handleEdit} />
     </div>

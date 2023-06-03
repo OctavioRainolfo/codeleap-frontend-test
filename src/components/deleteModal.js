@@ -4,20 +4,6 @@ import ClickOutsideHandler from './ClickOutsideHandler';
 
 function DeleteModal({ show, onCancel, onConfirm }) {
 
-    const handleClickOutside = (e) => {
-        if (e.target.className === 'modal modal-semi-transparent') {
-            onCancel();
-        }
-    }
-
-    useEffect(() => {
-        document.addEventListener('click', handleClickOutside);
-        return () => {
-            document.removeEventListener('click', handleClickOutside);
-        }
-    }, [])
-
-
     return (
         <>
             {show ? (

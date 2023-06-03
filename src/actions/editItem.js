@@ -1,7 +1,7 @@
 import { api } from '../actions/api';
-import { GetCareers } from './getCareers';
+import { GetItems } from './getItems';
 
-function EditItem(id, title, content) {
+function EditItem(id, title, content, closeLoader) {
     console.log(id, title, content)
     try {
         api.patch(`${id}/`,
@@ -11,6 +11,7 @@ function EditItem(id, title, content) {
             }
         ).then(() => {
             console.log('edited')
+            closeLoader();
         });
 
     } catch (error) {
