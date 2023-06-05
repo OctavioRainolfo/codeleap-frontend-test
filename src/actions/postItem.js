@@ -1,26 +1,26 @@
 import { api } from '../actions/api';
-import { GetItems } from './getItems';
+import { getItems } from './getItems';
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
-async function PostItem(username, title, content, toggleModal) {
+async function PostItem(username, title, content, callback) {
     console.log(username, title, content)
-
+    
     try {
-       await api.post(`/`, {
+        await api.post(`/`, {
             username: username,
             title: title,
             content: content
         }).then((res) => {
             console.log('postado!', res.data);
-            toggleModal();
-            console.log("togaddo")
+            callback();
         });
 
     } catch (error) {
         console.log(error);
     }
 
-   
+
 }
 
 export default PostItem

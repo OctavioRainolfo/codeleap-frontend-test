@@ -4,7 +4,7 @@ import { handleChange } from '../components/handleChange';
 import ClickOutsideHandler from './ClickOutsideHandler';
 
 
-function EditModal({ show, onCancel, onConfirm, id }) {
+function EditModal({ show, onCancel, onConfirm, id, array }) {
 
     const [title, setTitle] = useState('');
 
@@ -15,6 +15,15 @@ function EditModal({ show, onCancel, onConfirm, id }) {
     const handleSave = () => {
         onConfirm(id, title, content);
     }
+
+    useEffect(() => {
+        array.filter((item) => {
+            if (item.id === id) {
+                setTitle(item.title);
+                setContent(item.content);
+            }
+        })
+    }, [id])
 
 
     return (
@@ -27,13 +36,13 @@ function EditModal({ show, onCancel, onConfirm, id }) {
 
                             <div className='modal-input'>
                                 <h2>Title</h2>
-                                <input onChange={handleChange(setTitle)}
+                                <input value={title} onChange={handleChange(setTitle)}
                                     type="text" placeholder="Hello world" />
                             </div>
 
                             <div className='modal-input'>
                                 <h2>Content</h2>
-                                <textarea onChange={handleChange(setContent)}
+                                <textarea value={content} onChange={handleChange(setContent)}
                                     rows="4" placeholder="Content here" />
                             </div>
 

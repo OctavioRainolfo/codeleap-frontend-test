@@ -22,5 +22,8 @@ export const calculateTimeAgo = (created_datetime) => {
         timeAgo = `${seconds} second${seconds !== 1 ? 's' : ''} ago`;
     }
 
+    if(currentDate - createdDate < 0 ) {
+        return 'Just now';
+    }
     return timeAgo;
 };

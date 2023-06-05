@@ -3,17 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import './style.css'
 import trash from '../../components/assets/trash.png'
 import edit from '../../components/assets/edit.png'
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { calculateTimeAgo } from '../../components/timeAgo'
 import { handleChange } from '../../components/handleChange';
-import { GetItems } from '../../actions/getItems';
 import DeleteModal from '../../components/deleteModal';
-import DeleteItem from '../../actions/deleteItem';
 import VerifyUsername from '../../components/verifyUsername';
-import EditModal from '../../components/editModal';
-import EditItem from '../../actions/editItem';
-import PostItem from '../../actions/postItem';
 import BouncingModalLoader from '../../components/loaderModal';
+import { getItems, postItem, deleteItem, editItem } from '../../actions/api';
+import EditModal from '../../components/editModal';
 
 function MainScreen() {
 
@@ -35,8 +32,37 @@ function MainScreen() {
 
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+
+  const [posted, setPosted] = useState(false);
+
   //gets the last 10 posts and set to redux state
-  GetItems();
+
+  //gets the last 10 posts and set to redux state
+  useEffect(() => {
+    if(!state.initialLoad) {
+      getItems(dispatch);
+      setLoader(false);
+    }
+  }, []);
+
+  //if the post was successful, get the last 10 posts again
+  useEffect(() => {
+    if (posted) {
+      getItems(dispatch);
+      setPosted(false);
+      setLoader(false);
+    }
+  }, [posted]);
+    
+
+  const handlePost = () => {
+    console.log(state.username, "aaa", title, content);
+    setLoader(true);
+    postItem(state.username, title, content, setPosted);
+    setTitle('');
+    setContent('');
+  }
 
   useEffect(() => {
     VerifyUsername(state.username, navigate);
@@ -56,7 +82,7 @@ function MainScreen() {
 
   const handleDelete = () => {
     setLoader(true);
-    DeleteItem(id, closeLoader);
+    deleteItem(id);
     setShowDelete(false);
   }
 
@@ -76,23 +102,11 @@ function MainScreen() {
     setShowEdit(false);
   }
 
-  const handleEdit = (id, title, content) => {
+  const handleEdit = (id) => {
     setLoader(true);
-    EditItem(id, title, content, closeLoader);
+    editItem(id);
     setShowEdit(false);
   }
-
-  const handlePost = () => {
-    console.log(state.username, "aaa", title, content);
-    setLoader(true);
-    PostItem(state.username, title, content, closeLoader);
-  }
-
-  const closeLoader = () => {
-    console.log("toggle", loader)
-    setLoader(false);
-  }
-
 
   function mapPosts() {
     if (state.initialLoad) {
@@ -157,12 +171,16 @@ function MainScreen() {
 
             <div className='titleInput std-margin std-width'>
               <h2>Title</h2>
-              <input onChange={handleChange(setTitle)}
+              <input
+                value={title}
+                onChange={handleChange(setTitle)}
                 type="text" placeholder="Hello world" />
             </div>
             <div className='contentInput std-margin std-width'>
               <h2>Content</h2>
-              <textarea onChange={handleChange(setContent)}
+              <textarea
+                value={content}
+                onChange={handleChange(setContent)}
                 rows="4" placeholder="Content here" />
             </div>
 
@@ -178,7 +196,9 @@ function MainScreen() {
 
       {loader ? <BouncingModalLoader /> : null}
       <DeleteModal show={showDelete} onConfirm={handleDelete} onCancel={handleOnCancelDelete} />
-      <EditModal show={showEdit} id={id} onCancel={handleOnCancelEdit} onConfirm={handleEdit} />
+      <EditModal show={showEdit} id={id}
+        onCancel={handleOnCancelEdit} onConfirm={handleEdit}
+        array={state.results} />
     </div>
   )
 }
