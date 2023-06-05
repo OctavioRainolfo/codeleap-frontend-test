@@ -14,11 +14,17 @@ export const getItems = async (dispatch) => {
     );
 };
 
-export const deleteItem = (id) => {
-    api.delete(`${id}/`);
+export const deleteItem = (id, setState) => {
+    api.delete(`${id}/`).then((res) => {
+        console.log('deletado!');
+        setState(true);
+    }).catch((err) => {
+        console.log(err)
+    }
+    );
 }
 
-export const editItem = (id, title, content) => {
+export const editItem = (id, title, content, setState) => {
     api.patch(`${id}/`,
         {
             title: title,
@@ -26,6 +32,7 @@ export const editItem = (id, title, content) => {
         }
     ).then((res) => {
         console.log('editado!', res.data);
+        setState(true);
     }
     );
 }

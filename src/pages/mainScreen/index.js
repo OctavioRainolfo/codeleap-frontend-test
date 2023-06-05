@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom';
 import './style.css'
 import trash from '../../components/assets/trash.png'
@@ -36,11 +36,15 @@ function MainScreen() {
 
   const [posted, setPosted] = useState(false);
 
+  const [deleted, setDeleted] = useState(false);
+
+  const [edited, setEdited] = useState(false);
+
   //gets the last 10 posts and set to redux state
 
   //gets the last 10 posts and set to redux state
   useEffect(() => {
-    if(!state.initialLoad) {
+    if (!state.initialLoad) {
       getItems(dispatch);
       setLoader(false);
     }
@@ -53,8 +57,17 @@ function MainScreen() {
       setPosted(false);
       setLoader(false);
     }
-  }, [posted]);
-    
+    if (deleted) {
+      getItems(dispatch);
+      setDeleted(false);
+      setLoader(false);
+    }
+    if (edited) {
+      getItems(dispatch);
+      setEdited(false);
+      setLoader(false);
+    }
+  }, [posted, deleted, edited]);
 
   const handlePost = () => {
     console.log(state.username, "aaa", title, content);
@@ -80,35 +93,32 @@ function MainScreen() {
     console.log(state);
   }, [state]);
 
-  const handleDelete = () => {
+  const handleDelete = useCallback(() => {
     setLoader(true);
-    deleteItem(id);
+    deleteItem(id, setDeleted);
     setShowDelete(false);
-  }
+  }, [id]);
 
-  const handleShowDelete = () => {
-    setShowDelete(true);
-  }
-
-  const handleOnCancelDelete = () => {
+  const handleOnCancelDelete = useCallback(() => {
     setShowDelete(false);
-  }
+  }, []);
 
-  const handleShowEdit = () => {
+  const handleShowEdit = useCallback(() => {
     setShowEdit(true);
-  }
+  }, []);
 
-  const handleOnCancelEdit = () => {
+  const handleOnCancelEdit = useCallback(() => {
     setShowEdit(false);
-  }
+  }, []);
 
   const handleEdit = (id) => {
     setLoader(true);
-    editItem(id);
+    editItem(id, setEdited);
     setShowEdit(false);
   }
 
-  function mapPosts() {
+  const mapPosts = useMemo(() => {
+    console.log("memo")
     if (state.initialLoad) {
       return (
         state.results.map((item, index) => {
@@ -121,7 +131,7 @@ function MainScreen() {
                   <div className='icons-container'>
                     <img src={trash} onClick={() => {
                       setId(item.id);
-                      handleShowDelete();
+                      handleOnCancelDelete();
                     }} />
                     <img onClick={() => {
                       setId(item.id);
@@ -155,7 +165,7 @@ function MainScreen() {
       return <BouncingModalLoader />
     }
 
-  }
+  });
 
   return (
     <div className='container'>
@@ -190,7 +200,7 @@ function MainScreen() {
           </div>
         </div>
 
-        {mapPosts()}
+        {mapPosts}
 
       </div>
 
