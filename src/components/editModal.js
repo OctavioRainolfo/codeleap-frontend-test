@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import './style.css'
 import { handleChange } from './handleChange';
-import ClickOutsideHandler from './clickOutsideHandler';
+import ClickOutsideHandler from './handleClickoutside';
 import { motion } from 'framer-motion'
 import { modalVariants } from './deleteModal';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import './style.css';
 import { motion, AnimatePresence } from 'framer-motion';
-import ClickOutsideHandler from './clickOutsideHandler';
+import ClickOutsideHandler from './handleClickoutside';
 
 export const modalVariants = {
     hidden: {
