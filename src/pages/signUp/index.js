@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './style.css';
 import { handleChange } from '../../components/handleChange';
 import { useNavigate } from 'react-router-dom';
-import { SetUsernameState } from '../../actions/setUsernameState';
+import { SetUsernameState } from '../../actions/setUsername';
 import { SetNotificationState } from '../../actions/setNotificationState';
 import { useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
