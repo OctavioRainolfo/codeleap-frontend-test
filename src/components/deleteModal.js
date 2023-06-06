@@ -16,7 +16,9 @@ export const modalVariants = {
     },
 };
 
+
 function DeleteModal({ show, onCancel, onConfirm }) {
+
     return (
         <AnimatePresence>
             {show && (
@@ -25,7 +27,7 @@ function DeleteModal({ show, onCancel, onConfirm }) {
                     initial="hidden"
                     animate="visible"
                     exit="hidden"
-                    variants={modalVariants}    
+                    variants={modalVariants}
                 >
                     <ClickOutsideHandler onOutsideClick={onCancel}>
                         <div className="modal-content mainScreen-modal-width content-gap">
@@ -35,7 +37,8 @@ function DeleteModal({ show, onCancel, onConfirm }) {
                                 <button onClick={onCancel} className="cancel-button">
                                     Cancel
                                 </button>
-                                <button onClick={onConfirm} className="delete-button">
+                                <button
+                                    onClick={onConfirm} className="delete-button">
                                     Delete
                                 </button>
                             </div>

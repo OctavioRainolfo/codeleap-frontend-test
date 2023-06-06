@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react'
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
 import './style.css'
 import trash from '../../components/assets/trash.png'
@@ -12,6 +12,8 @@ import { BouncingModalLoader } from '../../components/loaderModal';
 import { getItems, getNextPage, postItem, deleteItem, editItem } from '../../actions/api';
 import EditModal from '../../components/editModal';
 import { motion } from 'framer-motion';
+import Pagination from '../../components/pagination';
+import { SetLogout } from '../../actions/dispatchLogoutState';
 
 function MainScreen() {
 
@@ -41,7 +43,7 @@ function MainScreen() {
 
   const [edited, setEdited] = useState(false);
 
-  //gets the last 10 posts and set to redux state
+  const buttonRef = useRef(null);
 
   //gets the last 10 posts and set to redux state
   useEffect(() => {
@@ -73,7 +75,7 @@ function MainScreen() {
   const handlePost = () => {
     console.log(state.username, "aaa", title, content);
     setLoader(true);
-    postItem(state.username, title, content, setPosted);
+    postItem(state.username, title, content, setPosted, dispatch);
     setTitle('');
     setContent('');
   }
@@ -97,7 +99,7 @@ function MainScreen() {
   const handleDelete = useCallback(() => {
     console.log(id);
     setLoader(true);
-    deleteItem(id, setDeleted);
+    deleteItem(id, setDeleted, dispatch);
     setShowDelete(false);
   }, [id]);
 
@@ -119,8 +121,22 @@ function MainScreen() {
 
   const handleEdit = useCallback((id, title, content) => {
     setLoader(true);
-    editItem(id, title, content, setEdited);
+    editItem(id, title, content, setEdited, dispatch);
     setShowEdit(false);
+  }, []);
+
+  const handleEnterPress = (e) => {
+    if (e.key === 'Enter') {
+      buttonRef.current.click()
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleEnterPress);
+
+    return () => {
+      document.removeEventListener('keydown', handleEnterPress);
+    };
   }, []);
 
   const mapPosts = useMemo(() => {
@@ -189,6 +205,19 @@ function MainScreen() {
 
           <div className='mainTitle'>
             <h1>CodeLeap Network</h1>
+            {state.username ?
+              <div className='logout-container'>
+                <h2>Welcome, {state.username}</h2>
+                <button
+                  className='logout-button'
+                  onClick={() => {
+                    SetLogout(dispatch);
+                    navigate('/');
+                  }}>Logout
+                </button>
+              </div>
+              :
+              null}
           </div>
 
           <div className="postContainer">
@@ -211,24 +240,21 @@ function MainScreen() {
               </div>
 
               <div className='create-button std-width'>
-                <button disabled={disabledButton} onClick={handlePost} className='create'>CREATE</button>
+                <button
+                  ref={buttonRef}
+                  onKeyDown={handleEnterPress}
+                  disabled={disabledButton} onClick={handlePost} className='create'>CREATE</button>
               </div>
             </div>
           </div>
 
           {mapPosts}
 
-          <div className='pagination'>
-            <button onClick={() => {
-              setLoader(true);
-              getNextPage(dispatch, state.previous);
-            }} className='pagination-button'>Previous</button>
-            ...
-            <button onClick={() => {
-              setLoader(true);
-              getNextPage(dispatch, state.next, setLoader);
-            }} className='pagination-button'>Next</button>
-          </div>
+          <Pagination getNextPage={getNextPage}
+            dispatch={dispatch}
+            state={state}
+            setLoader={setLoader}
+          />
 
         </div>
 

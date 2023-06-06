@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import './style.css'
-import { handleChange } from '../components/handleChange';
+import { handleChange } from './handleChange';
 import ClickOutsideHandler from './clickOutsideHandler';
 import { motion } from 'framer-motion'
 import { modalVariants } from './deleteModal';
@@ -27,15 +27,21 @@ function EditModal({ show, onCancel, onConfirm, id, array }) {
         })
     }, [id])
 
+    const handleEnterPress = (e) => {
+        if (e.key === 'Enter') {
+            handleSave();
+        }
+    }
+
     return (
         <>
             {show ? (
-                    <motion.div
-                        className="modal"
-                        initial="hidden"
-                        animate={show ? 'visible' : 'hidden'}
-                        variants={modalVariants}>
-                        <ClickOutsideHandler onOutsideClick={onCancel}>
+                <motion.div
+                    className="modal"
+                    initial="hidden"
+                    animate={show ? 'visible' : 'hidden'}
+                    variants={modalVariants}>
+                    <ClickOutsideHandler onOutsideClick={onCancel}>
                         <div ref={modalRef} className="modal-content mainScreen-modal-width " >
                             <h1>Edit item</h1>
 
@@ -47,7 +53,9 @@ function EditModal({ show, onCancel, onConfirm, id, array }) {
 
                             <div className='modal-input'>
                                 <h2>Content</h2>
-                                <textarea value={content} onChange={handleChange(setContent)}
+                                <textarea
+                                    onKeyDown={handleEnterPress}
+                                    value={content} onChange={handleChange(setContent)}
                                     rows="4" placeholder="Content here" />
                             </div>
 
@@ -56,12 +64,12 @@ function EditModal({ show, onCancel, onConfirm, id, array }) {
                                 <button onClick={handleSave} className="save-button">Save</button>
                             </div>
                         </div>
-                        </ClickOutsideHandler>
-                        </motion.div>
-                    )
-                : null}
-                </>
+                    </ClickOutsideHandler>
+                </motion.div>
             )
+                : null}
+        </>
+    )
 }
 
-            export default EditModal
+export default EditModal

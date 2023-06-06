@@ -1,0 +1,60 @@
+.container-signup {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.modal-semi-transparent {
+    background-color: var(--modalBG-color);
+}
+
+.modal-standart-background {
+    background-color: var(--background-color);
+}
+
+.signUp-modal-width {
+    max-width: 500px;
+}
+
+.mainScreen-modal-width {
+    max-width: 600px;
+}
+
+.modal-content {
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    padding: 1.5rem;
+    background-color: var(--white-color);
+    border-radius: 1rem;
+    width: 80%;
+}
+
+.modal-input {
+    width: 100%;
+    margin-top: 1.5rem;
+    gap: 0.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-button {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}
+
+.content-gap {
+    gap: 2.5rem;
+}
+
+.enter-button {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+}

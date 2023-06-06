@@ -182,3 +182,100 @@
     width: 80%;
     max-width: 600px;
 }
+
+.notification-container {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    z-index: 9999;
+    width: 100%;
+}
+
+.notification {
+    position: absolute;
+    bottom: 0.2rem;
+    right: 0.2rem;
+    border-radius: 0.3rem;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+    transform: translateY(30px);
+    opacity: 0;
+    visibility: hidden;
+    animation: fade-in 3s linear forwards;
+}
+
+.notification:hover {
+    cursor: pointer;
+}
+
+.success {
+    background-color: #313e2c;
+    color: #aaec8a;
+}
+
+.error {
+    background-color: #3e2c2c;
+    color: #ec8a8a;
+}
+
+.notification-progress-success {
+    background: linear-gradient(to right, #313e2c, #aaec8a);
+}
+
+.notification-progress-error {
+    background: linear-gradient(to right, #3e2c2c, #ec8a8a);
+}
+
+.notification-icon {
+    height: 1.2rem;
+    width: 1.2rem;
+    margin-right: 4px;
+}
+
+.notification-body {
+    display: flex;
+    align-items: center;
+    padding: 1rem 0.5rem;
+}
+
+.notification-progress {
+    position: absolute;
+    left: 4px;
+    bottom: 4px;
+    width: calc(100% - 0.5rem);
+    height: 3px;
+    transform: scaleX(0);
+    transform-origin: left;
+    border-radius: inherit;
+    animation: progress 2.5s 0.3s linear forwards;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(30px);
+    }
+
+    5% {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    95% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(30px);
+    }
+}
+
+@keyframes progress {
+    to {
+        transform: scaleX(1);
+    }
+}
