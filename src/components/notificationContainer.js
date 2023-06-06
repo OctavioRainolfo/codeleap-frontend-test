@@ -23,7 +23,7 @@ const NotificationContainer = () => {
                 DispatchHideMessage(dispatch);
             }, 3000);
         }
-    }, [showNotification]);
+    }, [showNotification, dispatch]);
 
     return (
         <div>

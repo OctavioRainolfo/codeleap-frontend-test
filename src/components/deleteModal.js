@@ -16,7 +16,6 @@ export const modalVariants = {
     },
 };
 
-
 function DeleteModal({ show, onCancel, onConfirm }) {
 
     return (

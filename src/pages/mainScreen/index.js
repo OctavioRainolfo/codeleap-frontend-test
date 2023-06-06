@@ -51,7 +51,7 @@ function MainScreen() {
       getItems(dispatch);
       setLoader(false);
     }
-  }, []);
+  }, [dispatch, state.initialLoad]);
 
   //if the post was successful, get the last 10 posts again
   useEffect(() => {
@@ -70,10 +70,9 @@ function MainScreen() {
       setEdited(false);
       setLoader(false);
     }
-  }, [posted, deleted, edited]);
+  }, [posted, deleted, edited, dispatch]);
 
   const handlePost = () => {
-    console.log(state.username, "aaa", title, content);
     setLoader(true);
     postItem(state.username, title, content, setPosted, dispatch);
     setTitle('');
@@ -82,7 +81,7 @@ function MainScreen() {
 
   useEffect(() => {
     VerifyUsername(state.username, navigate);
-  }, [])
+  }, [navigate, state.username]);
 
   useEffect(() => {
     if (title.length > 0 && content.length > 0) {
@@ -90,18 +89,16 @@ function MainScreen() {
     } else {
       !disabledButton && setDisabledButton(true);
     }
-  }, [title, content]);
+  }, [title, content, disabledButton]);
 
   useEffect(() => {
-    console.log(state);
   }, [state]);
 
   const handleDelete = useCallback(() => {
-    console.log(id);
     setLoader(true);
     deleteItem(id, setDeleted, dispatch);
     setShowDelete(false);
-  }, [id]);
+  }, [id, dispatch]);
 
   const handleOnCancelDelete = useCallback(() => {
     setShowDelete(false);
@@ -123,7 +120,7 @@ function MainScreen() {
     setLoader(true);
     editItem(id, title, content, setEdited, dispatch);
     setShowEdit(false);
-  }, []);
+  }, [dispatch]);
 
   const handleEnterPress = (e) => {
     if (e.key === 'Enter') {
@@ -156,14 +153,16 @@ function MainScreen() {
                 <h1>@{item.title}</h1>
                 {item.username === state.username ?
                   <div className='icons-container'>
-                    <img src={trash} onClick={() => {
-                      setId(item.id);
-                      handleShowDelete();
-                    }} />
-                    <img onClick={() => {
-                      setId(item.id);
-                      handleShowEdit();
-                    }}
+                    <img src={trash} alt="delete"
+                      onClick={() => {
+                        setId(item.id);
+                        handleShowDelete();
+                      }} />
+                    <img alt="edit"
+                      onClick={() => {
+                        setId(item.id);
+                        handleShowEdit();
+                      }}
                       src={edit} />
                   </div>
                   : null
@@ -192,7 +191,7 @@ function MainScreen() {
       return <BouncingModalLoader />
     }
 
-  });
+  }, [state.results, state.username, state.initialLoad, handleShowDelete, handleShowEdit]);
 
   return (
     <motion.div

@@ -1,4 +1,3 @@
-import React from 'react'
 import { hideMessage } from '../redux/slice'
 
 function DispatchHideMessage(dispatch) {

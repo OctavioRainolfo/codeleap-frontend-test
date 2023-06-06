@@ -14,19 +14,20 @@ function SignUpModal() {
 
     const [loader, setLoader] = useState(false);
 
-    const dispatch = useDispatch();
-
     const [name, setName] = useState('');
+
+    const dispatch = useDispatch();
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (name.length > 0) {
+        if (name.length > 0 && disabled) {
             setDisabled(false);
-        } else {
-            !disabled && setDisabled(true);
+        } else if (name.length === 0 && !disabled) {
+            setDisabled(true);
         }
-    }, [name]);
+    }, [name, disabled]);
+
 
     const localName = localStorage.getItem('username');
 
@@ -36,12 +37,12 @@ function SignUpModal() {
             SetNotificationState(dispatch, { icon: 'success', text: 'Welcome back' });
             navigate('/mainScreen');
         }
-    }, []);
+    }, [dispatch, localName, navigate]);
 
     const handleUsername = () => {
         setLoader(true);
         SetUsernameState(dispatch, name);
-        SetNotificationState(dispatch, { icon: 'success', text: 'Welcome to CodeLeap network!' });
+        SetNotificationState(dispatch, { icon: 'success', text: 'Welcome ' + name + "!" });
         navigate('/mainScreen');
     }
 
@@ -52,7 +53,6 @@ function SignUpModal() {
     }
 
     return (
-
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -80,7 +80,6 @@ function SignUpModal() {
                 {loader ? <BouncingModalLoader /> : null}
 
             </>
-
         </motion.div>
     )
 }

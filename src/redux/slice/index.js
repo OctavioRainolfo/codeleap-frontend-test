@@ -23,7 +23,6 @@ export const crudSlice = createSlice({
       state.next = action.payload.next;
       state.previous = action.payload.previous;
       state.results = action.payload.results;
-
       state.initialLoad = true;
     },
     setUsername: (state, action) => {
@@ -42,7 +41,6 @@ export const crudSlice = createSlice({
       state.notification.message = action.payload.text;
       state.notification.icon = action.payload.icon;
       state.notification.showNotification = true;
-      console.log("true", action.payload.text, action.payload.icon)
     },
     hideMessage: (state) => {
       state.notification.message = '';

@@ -5,7 +5,6 @@ import ClickOutsideHandler from './clickOutsideHandler';
 import { motion } from 'framer-motion'
 import { modalVariants } from './deleteModal';
 
-
 function EditModal({ show, onCancel, onConfirm, id, array }) {
 
     const [title, setTitle] = useState('');
@@ -19,13 +18,12 @@ function EditModal({ show, onCancel, onConfirm, id, array }) {
     }
 
     useEffect(() => {
-        array.filter((item) => {
-            if (item.id === id) {
-                setTitle(item.title);
-                setContent(item.content);
-            }
-        })
-    }, [id])
+        const filteredItem = array.find((item) => item.id === id);
+        if (filteredItem) {
+            setTitle(filteredItem.title);
+            setContent(filteredItem.content);
+        }
+    }, [array, id])
 
     const handleEnterPress = (e) => {
         if (e.key === 'Enter') {
