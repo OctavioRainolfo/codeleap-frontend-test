@@ -8,9 +8,10 @@ import { calculateTimeAgo } from '../../components/timeAgo'
 import { handleChange } from '../../components/handleChange';
 import DeleteModal from '../../components/deleteModal';
 import VerifyUsername from '../../components/verifyUsername';
-import BouncingModalLoader from '../../components/loaderModal';
-import { getItems, postItem, deleteItem, editItem } from '../../actions/api';
+import { BouncingModalLoader } from '../../components/loaderModal';
+import { getItems, getNextPage, postItem, deleteItem, editItem } from '../../actions/api';
 import EditModal from '../../components/editModal';
+import { motion } from 'framer-motion';
 
 function MainScreen() {
 
@@ -94,6 +95,7 @@ function MainScreen() {
   }, [state]);
 
   const handleDelete = useCallback(() => {
+    console.log(id);
     setLoader(true);
     deleteItem(id, setDeleted);
     setShowDelete(false);
@@ -101,6 +103,10 @@ function MainScreen() {
 
   const handleOnCancelDelete = useCallback(() => {
     setShowDelete(false);
+  }, []);
+
+  const handleShowDelete = useCallback(() => {
+    setShowDelete(true);
   }, []);
 
   const handleShowEdit = useCallback(() => {
@@ -111,19 +117,24 @@ function MainScreen() {
     setShowEdit(false);
   }, []);
 
-  const handleEdit = (id) => {
+  const handleEdit = useCallback((id, title, content) => {
     setLoader(true);
-    editItem(id, setEdited);
+    editItem(id, title, content, setEdited);
     setShowEdit(false);
-  }
+  }, []);
 
   const mapPosts = useMemo(() => {
-    console.log("memo")
     if (state.initialLoad) {
       return (
         state.results.map((item, index) => {
           return (
-            <div key={index} className='postContainer'>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              key={index}
+              className='postContainer'
+            >
 
               <div className='content-header std-width'>
                 <h1>@{item.title}</h1>
@@ -131,7 +142,7 @@ function MainScreen() {
                   <div className='icons-container'>
                     <img src={trash} onClick={() => {
                       setId(item.id);
-                      handleOnCancelDelete();
+                      handleShowDelete();
                     }} />
                     <img onClick={() => {
                       setId(item.id);
@@ -157,7 +168,7 @@ function MainScreen() {
               </div>
 
 
-            </div>
+            </motion.div>
           )
         })
       )
@@ -168,48 +179,67 @@ function MainScreen() {
   });
 
   return (
-    <div className='container'>
-      <div className='mainContent'>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <div className='container'>
+        <div className='mainContent'>
 
-        <div className='mainTitle'>
-          <h1>CodeLeap Network</h1>
-        </div>
+          <div className='mainTitle'>
+            <h1>CodeLeap Network</h1>
+          </div>
 
-        <div className="postContainer">
-          <div className='content std-width'>
-            <h1 className='std-margin'>What's on your mind?</h1>
+          <div className="postContainer">
+            <div className='content std-width'>
+              <h1 className='std-margin'>What's on your mind?</h1>
 
-            <div className='titleInput std-margin std-width'>
-              <h2>Title</h2>
-              <input
-                value={title}
-                onChange={handleChange(setTitle)}
-                type="text" placeholder="Hello world" />
-            </div>
-            <div className='contentInput std-margin std-width'>
-              <h2>Content</h2>
-              <textarea
-                value={content}
-                onChange={handleChange(setContent)}
-                rows="4" placeholder="Content here" />
-            </div>
+              <div className='titleInput std-margin std-width'>
+                <h2>Title</h2>
+                <input
+                  value={title}
+                  onChange={handleChange(setTitle)}
+                  type="text" placeholder="Hello world" />
+              </div>
+              <div className='contentInput std-margin std-width'>
+                <h2>Content</h2>
+                <textarea
+                  value={content}
+                  onChange={handleChange(setContent)}
+                  rows="4" placeholder="Content here" />
+              </div>
 
-            <div className='create-button std-width'>
-              <button disabled={disabledButton} onClick={handlePost} className='create'>CREATE</button>
+              <div className='create-button std-width'>
+                <button disabled={disabledButton} onClick={handlePost} className='create'>CREATE</button>
+              </div>
             </div>
           </div>
+
+          {mapPosts}
+
+          <div className='pagination'>
+            <button onClick={() => {
+              setLoader(true);
+              getNextPage(dispatch, state.previous);
+            }} className='pagination-button'>Previous</button>
+            ...
+            <button onClick={() => {
+              setLoader(true);
+              getNextPage(dispatch, state.next, setLoader);
+            }} className='pagination-button'>Next</button>
+          </div>
+
         </div>
 
-        {mapPosts}
-
+        {loader ? <BouncingModalLoader /> : null}
+        <DeleteModal show={showDelete} onConfirm={handleDelete}
+          onCancel={handleOnCancelDelete} />
+        <EditModal show={showEdit} id={id}
+          onCancel={handleOnCancelEdit} onConfirm={handleEdit}
+          array={state.results} />
       </div>
-
-      {loader ? <BouncingModalLoader /> : null}
-      <DeleteModal show={showDelete} onConfirm={handleDelete} onCancel={handleOnCancelDelete} />
-      <EditModal show={showEdit} id={id}
-        onCancel={handleOnCancelEdit} onConfirm={handleEdit}
-        array={state.results} />
-    </div>
+    </motion.div>
   )
 }
 

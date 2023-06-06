@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react'
 import './style.css'
 import { handleChange } from '../components/handleChange';
-import ClickOutsideHandler from './ClickOutsideHandler';
+import ClickOutsideHandler from './clickOutsideHandler';
+import { motion } from 'framer-motion'
+import { modalVariants } from './deleteModal';
 
 
 function EditModal({ show, onCancel, onConfirm, id, array }) {
@@ -25,13 +27,16 @@ function EditModal({ show, onCancel, onConfirm, id, array }) {
         })
     }, [id])
 
-
     return (
         <>
             {show ? (
-                <div ref={modalRef} className="modal modal-semi-transparent">
+                    <motion.div
+                        className="modal"
+                        initial="hidden"
+                        animate={show ? 'visible' : 'hidden'}
+                        variants={modalVariants}>
                         <ClickOutsideHandler onOutsideClick={onCancel}>
-                        <div className="modal-content mainScreen-modal-width " >
+                        <div ref={modalRef} className="modal-content mainScreen-modal-width " >
                             <h1>Edit item</h1>
 
                             <div className='modal-input'>
@@ -51,8 +56,8 @@ function EditModal({ show, onCancel, onConfirm, id, array }) {
                                 <button onClick={handleSave} className="save-button">Save</button>
                             </div>
                         </div>
-                    </ClickOutsideHandler>
-                    </div>
+                        </ClickOutsideHandler>
+                        </motion.div>
                     )
                 : null}
                 </>

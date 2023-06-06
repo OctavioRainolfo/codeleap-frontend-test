@@ -14,17 +14,31 @@ export const getItems = async (dispatch) => {
     );
 };
 
+export const getNextPage = async ( dispatch, nextPage, setState ) => {
+    await axios.get(`${nextPage}`).then((res) => {
+        dispatch(setCareers(res.data))
+        setState(false);
+    }).catch((err) => {
+        console.log(err)
+        setState(false);
+    }
+    );
+};
+
 export const deleteItem = (id, setState) => {
+    console.log(id);
     api.delete(`${id}/`).then((res) => {
         console.log('deletado!');
         setState(true);
     }).catch((err) => {
         console.log(err)
+        setState(true);
     }
     );
 }
 
 export const editItem = (id, title, content, setState) => {
+    console.log(id, title, content);
     api.patch(`${id}/`,
         {
             title: title,
@@ -32,6 +46,10 @@ export const editItem = (id, title, content, setState) => {
         }
     ).then((res) => {
         console.log('editado!', res.data);
+        setState(true);
+    }
+    ).catch((err) => {
+        console.log(err)
         setState(true);
     }
     );

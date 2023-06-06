@@ -35,6 +35,16 @@ button:disabled {
   cursor: not-allowed;
 }
 
+button:hover {
+  background-position: left bottom;
+  color: var(--light-color);
+  transition: ease-in 0.2s;
+}
+
+button:not(:hover) {
+  transition: ease-in 0.2s;
+}
+
 p {
   margin: 0;
   padding: 0;

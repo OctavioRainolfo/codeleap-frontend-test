@@ -13,11 +13,14 @@
 
 .modal-semi-transparent {
     background-color: var(--modalBG-color);
+    transition: background-color 0.5s ease;
 }
 
 .modal-standart-background {
     background-color: var(--background-color);
 }
+
+
 
 .signUp-modal-width {
     max-width: 500px;
@@ -36,7 +39,7 @@
     padding: 1.5rem;
     background-color: var(--white-color);
     border-radius: 1rem;
-    width: 80%;
+    width: 100%;
 }
 
 .modal-input {
@@ -176,5 +179,6 @@
 .flex-center {
     display: flex;
     justify-content: center;
-    width: 100%;
+    width: 80%;
+    max-width: 600px;
 }
